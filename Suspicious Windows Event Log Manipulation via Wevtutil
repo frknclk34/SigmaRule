@@ -1,0 +1,30 @@
+title: Suspicious Windows Event Log Manipulation via Wevtutil
+status: status
+description: Detects potential defense evasion activities involving the use of wevtutil.exe to clear or export Windows event logs, which may indicate an attacker attempting to erase evidence or manipulate logs to obscure malicious activities.
+references:
+    - local
+author: Furkan Celik
+date: 2025/08/22
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection1:
+        - Image|endswith: '\wevtutil.exe'
+        - CommandLine|contains:
+            - 'wevtutil.exe'
+            - 'cl'
+    selection2:
+        - Image|endswith: '\wevtutil.exe'
+        - CommandLine|contains:
+            - 'wevtutil.exe'
+            - 'epl'
+            - 'Security'
+            - '.evtx'
+    condition: selection1 or selection2
+falsepositives:
+    - Unknown
+level: High
