@@ -1,0 +1,2 @@
+# SigmaRule
+Sigma rule
